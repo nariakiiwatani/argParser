@@ -10,10 +10,11 @@ Option parser for AppleScript.
 - key-less arguments will be stored in `_` of the result.  
 
 ```
-setPropShortNames({l:"list",h:"help"})
-parse({"-l", "foo", "-h", "--key1", "value1", "--key2", "value2", "namelessValue"})
+setPropShortNames({l:"list",h:"help"}) -- optional
+setDefaultValues({|list|:"default value of list", key2:"defKey2"}) -- optional
+parse({"-l", "foo", "-h", "--key1", "value1", "namelessValue", "nameless2"})
 
--- result {_:"namelessValue", list:"foo", help:null, key1:"value1", key2:"value2"}
+-- result {_:{"namelessValue","nameless2"}, list:"foo", key2:"defKey2", help:null, key1:"value1"}
 ```
 
 ## usage
@@ -24,16 +25,3 @@ Running `install.sh` on Terminal will do it instead of you. (Perhaps you need to
 
 2. See [sample.scpt](sample.scpt)
 
-```
-on run argv
-	-- load script to object
-	set parser to load script file ((path to scripts folder as string) & "argParser.scpt")
-	tell parser
-		-- set short names of argument (if needed)
-		setPropShortNames({l:"list", h:"help"})
-		-- parse argv
-		parse(argv)
-	end tell
-	result
-end run
-```
